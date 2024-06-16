@@ -14,9 +14,9 @@ public class FindCharacterRepeataion {
 		
 		String str = "Better Butter";
 		//Java 8 Style
-		Map<Character, Long> charCountMap = str.chars()
-											.mapToObj(i ->(char)i)
-											.filter(Character :: isLetterOrDigit)
+		Map<Character, Long> charCountMap = str.chars()//returns an IntStream of characters from the string.
+											.mapToObj(i ->(char)i)//converts each integer value to a character.
+											.filter(Character :: isLetterOrDigit)//filters out non-alphanumeric characters
 											.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		charCountMap.forEach((k,v) -> System.out.println(k+" = "+v));
 		
