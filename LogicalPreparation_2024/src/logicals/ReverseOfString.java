@@ -5,7 +5,7 @@ public class ReverseOfString {
 	public static void main(String[] args) {
 		
 		//Logical way
-		String str = "DCBA";
+		String str = "Hriday";
 		String reverse = reverseString(str);
 		System.out.println("The reverse of "+str+" = "+reverse);
 
@@ -30,7 +30,7 @@ public class ReverseOfString {
 		if(str.length() == 0)
 			return "";
 		else
-			return str.charAt(str.length() - 1) + str.substring(0,str.length() - 1);
+			return str.charAt(str.length() - 1) +recursionReverseString(str.substring(0,str.length() - 1));
 
 
 	}
