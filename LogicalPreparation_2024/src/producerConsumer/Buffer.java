@@ -1,6 +1,8 @@
 package producerConsumer;
-
-public class Buffer {
+/*While a Thread executing any synchronized method the remaining Threads are not allowed to execute any
+synchronized method on same object simultaneously. But remaining Threads are allowed to execute any 
+non-synchronized method simultaneously. [Object level lock concept is implemented for Synchronized methods ]
+*/public class Buffer {
 
 	int a ;
 	boolean produced = false;
