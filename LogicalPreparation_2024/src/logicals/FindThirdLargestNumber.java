@@ -11,21 +11,23 @@ public class FindThirdLargestNumber {
 
 		System.out.println("The Given Array  : "+Arrays.toString(array));
 		//Logical Style
-		int first = array[0];
-		int second = array[0];
+		int first = 0;
+		int second = 0;
 		int third = 0;
 
 		for(int i : array) {
 
 			if(i > first) {
+				third = second;
 				second = first;
 				first = i;
 
 			}
-			else if(i > second) 
-				second = i;
-			else 
-				if(i > third && i < second)
+			else if(i > second) {
+				third = second;
+				second = i;	
+			}
+			else if(i > third)
 					third = i;
 
 
