@@ -77,6 +77,8 @@ public class InterviewQuestionsJava8 {
 		//First Method
 		//Set<Integer> duplicateSet = intList.stream().filter(n -> ! intSet.add(n)).collect(Collectors.toSet());
 		//Second Method
+		//List<Integer> dupList = intList.stream().filter(e -> !intSet.add(e)).toList();
+		//Third Method
 		Set<Integer> duplicateSet = intList.stream().filter(i -> Collections.frequency(intList, i) > 1).collect(Collectors.toSet());
 		
 		System.out.println("Duplicate Number in a given list : "+duplicateSet);
