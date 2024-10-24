@@ -1,8 +1,8 @@
 package abstractt.factory.design.pattern.loanapproval.loanfactory;
 
-import abstractt.factory.design.pattern.loanapproval.homeloan.HomeLoanCreditCheck;
-import abstractt.factory.design.pattern.loanapproval.homeloan.HomeLoanDisbursement;
-import abstractt.factory.design.pattern.loanapproval.homeloan.HomeLoanDocumentVerification;
+import abstractt.factory.design.pattern.loanapproval.home.HomeLoanCreditCheck;
+import abstractt.factory.design.pattern.loanapproval.home.HomeLoanDisbursement;
+import abstractt.factory.design.pattern.loanapproval.home.HomeLoanDocumentVerification;
 import abstractt.factory.design.pattern.loanapproval.process.CreditCheck;
 import abstractt.factory.design.pattern.loanapproval.process.DocumentVerification;
 import abstractt.factory.design.pattern.loanapproval.process.LoanDisbursement;
