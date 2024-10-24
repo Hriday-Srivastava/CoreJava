@@ -1,0 +1,27 @@
+package abstractt.factory.design.pattern;
+
+public class Step_4_ServerComputerFactory implements Step_3_AbstractComputerFactory 
+{
+	private String ram;
+	private String hd;
+	private String processor;
+	
+	
+
+	public Step_4_ServerComputerFactory(String ram, String hd, String processor) {
+		super();
+		this.ram = ram;
+		this.hd = hd;
+		this.processor = processor;
+	}
+
+
+
+	@Override
+	public Step_1_Computer createFactory() 
+	{
+		
+		return new Step_2_ServerComputer(ram, hd, processor);
+	}
+
+}
