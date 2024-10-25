@@ -4,14 +4,30 @@ public class Employee {
 
 	String name;
 	int age;
+	double salary;
+	String department;
 	/**
 	 * @param name
 	 * @param age
 	 */
-	public Employee(String name, int age) {
+	public Employee(String name, int age, double salary, String department ) {
 		super();
 		this.name = name;
 		this.age = age;
+		this.salary = salary;
+		this.department = department;
+	}
+	public double getSalary() {
+		return salary;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 	public String getName() {
 		return name;
@@ -27,7 +43,7 @@ public class Employee {
 	}
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + ", age=" + age + "]";
+		return "Employee [name=" + name + ", age=" + age + ", salary=" + salary + ", department=" + department + "]";
 	}
 	
 	

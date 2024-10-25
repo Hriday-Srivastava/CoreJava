@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -83,11 +84,11 @@ public class InterviewQuestionsJava8 {
 		
 		System.out.println("Duplicate Number in a given list : "+duplicateSet);
 				
-		Employee emp1 = new Employee("Jyoti", 30);
-		Employee emp2 = new Employee("Verma", 32);
-		Employee emp3 = new Employee("Shyam", 50);
-		Employee emp4 = new Employee("Arbind", 44);
-		Employee emp5 = new Employee("Jyoti", 31);
+		Employee emp1 = new Employee("Jyoti", 30, 30000, "HR");
+		Employee emp2 = new Employee("Verma", 32, 40000,  "Finance");
+		Employee emp3 = new Employee("Shyam", 50, 25000, "Training");
+		Employee emp4 = new Employee("Arbind", 44, 50000, "Engineering");
+		Employee emp5 = new Employee("Jyoti", 31, 450000, "Engineering");
 		
 		List<Employee> empList = new ArrayList<>();
 		
@@ -225,7 +226,20 @@ public class InterviewQuestionsJava8 {
 		.skip(1).mapToInt(Integer::intValue).toArray();
 		System.out.println("Sorted Array after removing 3 : "+Arrays.toString(actualArray));
 		
-		//We have List of Employee object. group by salary and as per department = Engineering 
+		//We have List of Employee object. group by salary(in descending order) and as per department = Engineering  
+		Map<Double, List<Employee>> descedingSalaryMap = empList.stream()
+                .filter(e -> "Engineering".equals(e.getDepartment())) // Filter by department "Engineering"
+                .collect(Collectors.groupingBy(
+                        Employee::getSalary,        // Group by salary
+                        () -> new TreeMap<>(Comparator.reverseOrder()),  // Use TreeMap to sort keys in descending order
+                        Collectors.toList()         // Collect as List
+                    ));
+		
+		// Print the result
+		descedingSalaryMap.forEach((salary, empListt) -> {
+            System.out.println("Salary: " + salary);
+            empListt.forEach(System.out::println);
+        });
 		
 		LocalDate date = LocalDate.now();System.out.println("Date is : "+date);
 		LocalTime time = LocalTime.now();System.out.println("Time is : "+time);
