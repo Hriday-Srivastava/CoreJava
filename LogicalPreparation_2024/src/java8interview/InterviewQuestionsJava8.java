@@ -218,7 +218,14 @@ public class InterviewQuestionsJava8 {
 									.collect(Collectors.toList());
 		System.out.println("Phone Number using flatMap"+"("+") method : "+phoneNumbers);
 		
+		//===========================2=======0===========2========4============
+		// Sort below intArray into descending order and remove 3 and get into an Array using Stream api.
+		int[] intArrr = {0,0,1,1,0,0,3};
+		int[] actualArray = Arrays.stream(intArrr).boxed().sorted(Comparator.reverseOrder())
+		.skip(1).mapToInt(Integer::intValue).toArray();
+		System.out.println("Sorted Array after removing 3 : "+Arrays.toString(actualArray));
 		
+		//We have List of Employee object. group by salary and as per department = Engineering 
 		
 		LocalDate date = LocalDate.now();System.out.println("Date is : "+date);
 		LocalTime time = LocalTime.now();System.out.println("Time is : "+time);
