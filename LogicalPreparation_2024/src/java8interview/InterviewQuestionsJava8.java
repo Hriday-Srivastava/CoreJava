@@ -76,10 +76,12 @@ public class InterviewQuestionsJava8 {
 		System.out.println("A Given list is : "+intList);
 		Set<Integer> intSet = new HashSet();
 		//First Method
-		//Set<Integer> duplicateSet = intList.stream().filter(n -> ! intSet.add(n)).collect(Collectors.toSet());
+		List<Integer> duplicateList = intList.stream().filter(i -> intSet.add(i)).toList().stream().distinct().toList();
 		//Second Method
-		//List<Integer> dupList = intList.stream().filter(e -> !intSet.add(e)).toList();
+		//Set<Integer> duplicateSet = intList.stream().filter(n -> ! intSet.add(n)).collect(Collectors.toSet());
 		//Third Method
+		//List<Integer> dupList = intList.stream().filter(e -> !intSet.add(e)).toList();
+		//Fourth Method
 		Set<Integer> duplicateSet = intList.stream().filter(i -> Collections.frequency(intList, i) > 1).collect(Collectors.toSet());
 		
 		System.out.println("Duplicate Number in a given list : "+duplicateSet);
