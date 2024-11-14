@@ -40,7 +40,19 @@ public class InterviewQuestionsJava8 {
 		 9. To count the occurrences of words from a given string 
 		 9. Reverse the order of the array using streams
 		 10.Sort the list using Stream API
-		 11. Difference between Map & FlatMap	
+		 11. Difference between Map & FlatMap
+		 
+		 	
+		 	
+		//12. Find the  map of employee as per key "EmployeeId" and value "EmployeeName" and whose salary is less<300000.
+		//13. Get all department in a list from Employee list.
+		//14. Sort the employee list as per salary.
+		//15. Find the max and min paid salary employee from Employee list.
+		//16. gender(key) -> [names](value)
+		//17. Find the total number of employee as per male or female.
+		//18. anyMatch(predicate), allMatch(predicate), nonMatch(predicate)  all return type is boolean.
+		//19. Find top 2 paid employee.
+		 * 
 		*/		
 		//1. Sum of a list ================= Asked in Wipro
 		List<Integer> listForSum = new ArrayList();
@@ -86,11 +98,11 @@ public class InterviewQuestionsJava8 {
 		
 		System.out.println("Duplicate Number in a given list : "+duplicateSet);
 				
-		Employee emp1 = new Employee("Jyoti", 30, 30000, "HR");
-		Employee emp2 = new Employee("Verma", 32, 40000,  "Finance");
-		Employee emp3 = new Employee("Shyam", 50, 25000, "Training");
-		Employee emp4 = new Employee("Arbind", 44, 50000, "Engineering");
-		Employee emp5 = new Employee("Jyoti", 31, 450000, "Engineering");
+		Employee emp1 = new Employee("Jyoti", 30, 30000, "HR","Female");
+		Employee emp2 = new Employee("Verma", 32, 40000,  "Finance", "Male");
+		Employee emp3 = new Employee("Shyam", 50, 25000, "Training", "Male");
+		Employee emp4 = new Employee("Arbind", 44, 50000, "Engineering","Male");
+		Employee emp5 = new Employee("Jyoti", 31, 450000, "Engineering","Female");
 		
 		List<Employee> empList = new ArrayList<>();
 		
@@ -193,6 +205,9 @@ public class InterviewQuestionsJava8 {
 		               .sorted()
 		               .forEach(System.out::println);
 		        
+		        //Second method
+		        integerrList.stream().mapToInt(Integer :: intValue).sorted().boxed().toList().forEach(System.out::println);
+		        
 	   // 12. Sort the list in descending order using Stream API
 		        List<Integer> sortedDescending = integerrList.stream()
 		                                                .sorted(Comparator.reverseOrder())
@@ -243,9 +258,44 @@ public class InterviewQuestionsJava8 {
             empListt.forEach(System.out::println);
         });
 		
+		
+		//12. toMap(). Find the  map of employee as per key "EmployeeSalary" and value "EmployeeName" and whose salary is less<400000.
+		Map<Double, String> empMap = empList.stream().filter(emp -> emp.getSalary()<= 40000)
+									  .collect(Collectors.toMap(Employee :: getSalary, Employee :: getName));
+		System.out.println("Use of toMap() method of Collectors "+empMap);
+		
+		//13. Get all department in a list from Employee list.
+		List<String> departmentList = empList.stream().map(Employee :: getDepartment).distinct().toList();
+		System.out.println("All departments are of Employees : "+departmentList);
+		
+		//14. Sort the employee list as per salary.
+		List<Employee> sortedListAsPerSalary = empList.stream().sorted(Comparator.comparing(Employee :: getSalary).reversed()).toList();
+		System.out.println("Sorted List as per Salary : "+sortedListAsPerSalary);
+		
+		//15. Find the max and min paid salary employee from Employee list.
+		Employee highestPaidEmployee = empList.stream().max(Comparator.comparing(Employee :: getSalary)).get();
+		System.out.println("Highest Paid Salary Employee is : "+highestPaidEmployee);
+		Employee minimumPaidEmployee = empList.stream().min(Comparator.comparing(Employee :: getSalary)).get();
+		System.out.println("Minimum paid salary employee is : "+minimumPaidEmployee);
+		
+		//16. gender(key) -> [names](value)
+		Map<String, List<String>> employeeAsPerGender = empList.stream()
+														.collect(Collectors.groupingBy(Employee :: getGender, Collectors.mapping(Employee :: getName, Collectors.toList())));
+		System.out.println("All employees as per gender : "+employeeAsPerGender);
+		
+		//17. Find the total number of employee as per male or female.
+		Map<String, Long> countOfEmpAsPerGender = empList.stream().collect(Collectors.groupingBy(Employee :: getGender, Collectors.counting()));
+		System.out.println("Count of employees as per Gender : "+countOfEmpAsPerGender);
+		
+		//19. Find top 2 paid employee. limit(Long MaxSize);
+		List<Employee> top2Employees = empList.stream().sorted(Comparator.comparing(Employee :: getSalary).reversed())
+										.limit(2).toList();
+		System.out.println("Most paid 2 Employees are : "+top2Employees);
+		
 		LocalDate date = LocalDate.now();System.out.println("Date is : "+date);
 		LocalTime time = LocalTime.now();System.out.println("Time is : "+time);
 		LocalDateTime dateTime = LocalDateTime.now();System.out.println(dateTime);
+		
 		
 			
 		

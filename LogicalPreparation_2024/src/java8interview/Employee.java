@@ -3,6 +3,7 @@ package java8interview;
 public class Employee {
 
 	String name;
+	String gender;
 	int age;
 	double salary;
 	String department;
@@ -10,12 +11,19 @@ public class Employee {
 	 * @param name
 	 * @param age
 	 */
-	public Employee(String name, int age, double salary, String department ) {
+	public Employee(String name, int age, double salary, String department,String gender  ) {
 		super();
 		this.name = name;
 		this.age = age;
 		this.salary = salary;
 		this.department = department;
+		this.gender = gender;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	public double getSalary() {
 		return salary;
@@ -43,7 +51,8 @@ public class Employee {
 	}
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + ", age=" + age + ", salary=" + salary + ", department=" + department + "]";
+		return "Employee [name=" + name + ", gender=" + gender + ", age=" + age + ", salary=" + salary + ", department="
+				+ department + "]";
 	}
 	
 	
