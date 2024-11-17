@@ -3,6 +3,10 @@ package java8interview;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -283,7 +287,7 @@ public class InterviewQuestionsJava8 {
 														.collect(Collectors.groupingBy(Employee :: getGender, Collectors.mapping(Employee :: getName, Collectors.toList())));
 		System.out.println("All employees as per gender : "+employeeAsPerGender);
 		
-		//17. Find the total number of employee as per male or female.
+		//17. Find the total number of employee as per male and female.
 		Map<String, Long> countOfEmpAsPerGender = empList.stream().collect(Collectors.groupingBy(Employee :: getGender, Collectors.counting()));
 		System.out.println("Count of employees as per Gender : "+countOfEmpAsPerGender);
 		
@@ -295,6 +299,20 @@ public class InterviewQuestionsJava8 {
 		LocalDate date = LocalDate.now();System.out.println("Date is : "+date);
 		LocalTime time = LocalTime.now();System.out.println("Time is : "+time);
 		LocalDateTime dateTime = LocalDateTime.now();System.out.println(dateTime);
+		
+		LocalDateTime dateAndTime = LocalDateTime.of(1987, 8, 07, 9, 9);
+		System.out.println("My birthdate is : "+dateAndTime);
+		
+		Period period = Period.between(LocalDate.of(1987, 8, 7), LocalDate.now());
+		System.out.printf("I am old : %d Years, %d Months and %d Days", period.getYears(), period.getMonths(), period.getDays());
+		System.out.println("\n2000 is leap year or not ? "+Year.of(2000).isLeap());
+		
+		System.out.println("My TimeZone is : "+ZoneId.systemDefault());
+		
+		ZoneId america = ZoneId.of("America/Los_Angeles");
+		System.out.println("Current Time in America : "+ZonedDateTime.now(america));
+		
+		System.out.println("What would be date after Six month : "+LocalDate.now().plusMonths(6));
 		
 		
 			
