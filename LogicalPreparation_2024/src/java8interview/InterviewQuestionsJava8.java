@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class InterviewQuestionsJava8 {
 	
@@ -52,10 +54,10 @@ public class InterviewQuestionsJava8 {
 		//13. Get all department in a list from Employee list.
 		//14. Sort the employee list as per salary.
 		//15. Find the max and min paid salary employee from Employee list.
-		//16. gender(key) -> [names](value)
-		//17. Find the total number of employee as per male or female.
+		//16. gender(key) -> [names](value)    groupingBy and mapping
+		//17. Find the total number of employee as per male or female.      groupingBy
 		//18. anyMatch(predicate), allMatch(predicate), nonMatch(predicate)  all return type is boolean.
-		//19. Find top 2 paid employee.
+		//19. Find top 2 paid employee. limit(2)
 		 * 
 		*/		
 		//1. Sum of a list ================= Asked in Wipro
@@ -198,12 +200,11 @@ public class InterviewQuestionsJava8 {
 		        
 		// 10. Reverse the order of the array using streams       
 		int[] array = {12, 13, 14};
-		int[] reversedArray = Arrays.stream(array)
-		                                    .boxed() // convert int to Integer
-		                                    .sorted(Collections.reverseOrder()) // sort in reverse order
-		                                    .mapToInt(Integer::intValue) // convert back to int
-		                                    .toArray();
-		        
+		
+		  int[] reversedArray = Arrays.stream(array) .boxed() // convert int to Integer
+		  .sorted(Collections.reverseOrder()) // sort in reverse order
+		  .mapToInt(Integer::intValue).toArray(); // convert back to int .toArray();
+		 
 		// 11. Sort the list using Stream API
 		        integerrList.stream()
 		               .sorted()
@@ -315,7 +316,79 @@ public class InterviewQuestionsJava8 {
 		System.out.println("What would be date after Six month : "+LocalDate.now().plusMonths(6));
 		
 		
+		 Map<Integer, String> map1 = new HashMap<>();
+	        map1.put(101, "Rahul");
+	        map1.put(103, "Raj");
+	        map1.put(106, "Chinna");
+	        map1.put(105, "Rahim");
+
+	        Map<String, Double> map2 = new HashMap<>();
+	        map2.put("Chinna", 50000.0);
+	        map2.put("Rahim", 60000.0);
+	        map2.put("Raj", 70000.0);
+	        map2.put("Rahul", 20000.0);
+
+	        // Step 1: Sort map2 by values in descending order
+	        List<Map.Entry<String, Double>> sortedMap2Entries = map2.entrySet().stream()
+	            .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
+	            .collect(Collectors.toList());
+
+	        // Step 2: Map keys of map1 to sorted keys of map2
+	        Iterator<Map.Entry<String, Double>> sorteditr = sortedMap2Entries.iterator();
+
+	        Map<Integer, Double> result = map1.entrySet().stream()
+	            .collect(Collectors.toMap(
+	                Map.Entry::getKey,
+	                entry -> sorteditr.hasNext() ? sorteditr.next().getValue() : null,
+	                (e1, e2) -> e1, // Merge function (not needed here)
+	                LinkedHashMap::new // Maintain order
+	            ));
+
+	        // Print the result
+	        System.out.println(result);
+	        
+	        int[] intArr = {2, 2, 2, 3, 5, 7, 9, 9};
+
+	        // Use Stream API to find non-duplicate elements
+	        List<Integer> nonDuplicates = IntStream.of(intArr)
+	                .boxed()
+	                .collect(Collectors.groupingBy(e -> e, Collectors.counting())) // Count occurrences
+	                .entrySet()
+	                .stream()
+	                .filter(entry -> entry.getValue() == 1) // Keep only elements with count = 1
+	                .map(Map.Entry::getKey) // Extract the key (the number)
+	                .collect(Collectors.toList());
+
+	        // Print the result
+	        System.out.println(nonDuplicates);
+	        
+	        
+	        String[] input = {"apple", "banana", "orange", "apricot"}; //{a:"appleapricot", b:"banana", o:"orange"}
+
+
+	        // Use Stream API to group strings by their first character
+	        Map<Character, String> groupedStrings = Arrays.stream(input)
+	                .collect(Collectors.groupingBy(
+	                        str -> str.charAt(0),               // Group by the first character
+	                        LinkedHashMap::new,                // Preserve insertion order
+	                        Collectors.joining()               // Concatenate strings with the same key
+	                ));
+		
+		
+	      //21. Find the longest string from a string array.
+			String[] strArr = {"java", "computer", "serialization"};
+			String longestWord = Arrays.stream(strArr).reduce((word1, word2)-> word1.length() > word2.length() ? word1:word2).get();
+			System.out.println(longestWord);
 			
+			//22. Get all the numbers from int Array those has started with 1. int[] intArr1 = {12,23,18,20,15};
+			int[] intArr1 = {12,23,18,20,15};
+			List<String> intStrList = Arrays.stream(intArr1).boxed().map(s -> s+"").filter(s2 -> s2.startsWith("1")).toList();
+			System.out.println(intStrList);
+			
+			//23. String[] str= {1,2,3,4}; print like 1-2-3-4
+			String results = String.join("-", strArr);
+			System.out.println(results);
+ 			
 		
 	
 
