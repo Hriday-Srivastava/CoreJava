@@ -6,31 +6,36 @@ import java.util.Set;
 public class PermutationsCombination {
 
 	public static void main(String[] args) {
-		
+
 		String input = "ABC";
-        Set<String> result = new HashSet<>();
-        generatePermutations("", input, result);
+		Set<String> permutations = new HashSet<>();
 
-        // Print the result
-        System.out.println("Permutations: " + String.join(" ", result));
-    }
+		// Generate permutations
+		generatePermutations(input, "", permutations);
 
-    private static void generatePermutations(String prefix, String remaining, Set<String> result) {
-        if (remaining.isEmpty()) {
-            result.add(prefix); // Add the permutation to the set
-            return;
-        }
-
-        for (int i = 0; i < remaining.length(); i++) {
-            // Generate permutations with the current character fixed at the prefix
-            generatePermutations(
-                prefix + remaining.charAt(i), 
-                remaining.substring(0, i) + remaining.substring(i + 1), 
-                result
-            );
-        }
-    
-
+		// Print each permutation
+		for (String permutation : permutations) {
+			System.out.println(permutation);
+		}
 	}
+
+	private static void generatePermutations(String str, String prefix, Set<String> result) {
+		if (str.length() == 0) {
+			result.add(prefix);
+			return;
+		}
+
+		for (int i = 0; i < str.length(); i++) {
+			// Choose the current character
+			char currentChar = str.charAt(i);
+
+			// Remaining characters after excluding the current one
+			String remaining = str.substring(0, i) + str.substring(i + 1);
+
+			// Recursive call with the new prefix and remaining string
+			generatePermutations(remaining, prefix + currentChar, result);
+		}
+	}
+
 
 }
