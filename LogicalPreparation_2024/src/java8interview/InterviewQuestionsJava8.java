@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class InterviewQuestionsJava8 {
 	
@@ -315,49 +316,32 @@ public class InterviewQuestionsJava8 {
 		
 		System.out.println("What would be date after Six month : "+LocalDate.now().plusMonths(6));
 		
+		//20. Map1 and Map2 are there. First need to sort map2 by value then need to map map1 key with map2 value. 
 		
-		 Map<Integer, String> map1 = new HashMap<>();
-	        map1.put(101, "Rahul");
-	        map1.put(103, "Raj");
-	        map1.put(106, "Chinna");
-	        map1.put(105, "Rahim");
-
-	        Map<String, Double> map2 = new HashMap<>();
-	        map2.put("Chinna", 50000.0);
-	        map2.put("Rahim", 60000.0);
-	        map2.put("Raj", 70000.0);
-	        map2.put("Rahul", 20000.0);
-
-	        // Step 1: Sort map2 by values in descending order
-	        List<Map.Entry<String, Double>> sortedMap2Entries = map2.entrySet().stream()
-	            .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
-	            .collect(Collectors.toList());
-
-	        // Step 2: Map keys of map1 to sorted keys of map2
-	        Iterator<Map.Entry<String, Double>> sorteditr = sortedMap2Entries.iterator();
-
-	        Map<Integer, Double> result = map1.entrySet().stream()
-	            .collect(Collectors.toMap(
-	                Map.Entry::getKey,
-	                entry -> sorteditr.hasNext() ? sorteditr.next().getValue() : null,
-	                (e1, e2) -> e1, // Merge function (not needed here)
-	                LinkedHashMap::new // Maintain order
-	            ));
-
-	        // Print the result
-	        System.out.println(result);
+		Map<Integer, String> map1 = new LinkedHashMap<>(); map1.put(222, "Hriday"); map1.put(333, "Kumar");
+		Map<String, Double>  map2 = new LinkedHashMap<>(); map2.put("Sanjeet", 88888.0); map2.put("Pal", 50000.0);
+		
+		Map<String, Double> sortMap3 = map2.entrySet().stream().sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+				.collect(Collectors.toMap(Map.Entry :: getKey, Map.Entry :: getValue , (m1, m2) -> m1, LinkedHashMap :: new));
+		
+		Iterator<Map.Entry<String, Double>> itr = sortMap3.entrySet().iterator();
+		
+		Map<Integer, Double> map3 = map1.entrySet().stream()
+				.collect(Collectors.toMap(Map.Entry :: getKey, entry -> itr.hasNext() ? itr.next().getValue() : null,
+						(m4, m5) -> m4, LinkedHashMap :: new));
+		System.out.println(map3);
 	        
 	        int[] intArr = {2, 2, 2, 3, 5, 7, 9, 9};
 
 	        // Use Stream API to find non-duplicate elements
 	        List<Integer> nonDuplicates = IntStream.of(intArr)
 	                .boxed()
-	                .collect(Collectors.groupingBy(e -> e, Collectors.counting())) // Count occurrences
+	                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())) // Count occurrences
 	                .entrySet()
 	                .stream()
 	                .filter(entry -> entry.getValue() == 1) // Keep only elements with count = 1
 	                .map(Map.Entry::getKey) // Extract the key (the number)
-	                .collect(Collectors.toList());
+	                .toList();
 
 	        // Print the result
 	        System.out.println(nonDuplicates);
@@ -382,13 +366,62 @@ public class InterviewQuestionsJava8 {
 			
 			//22. Get all the numbers from int Array those has started with 1. int[] intArr1 = {12,23,18,20,15};
 			int[] intArr1 = {12,23,18,20,15};
-			List<String> intStrList = Arrays.stream(intArr1).boxed().map(s -> s+"").filter(s2 -> s2.startsWith("1")).toList();
-			System.out.println(intStrList);
+			int[] startWithOne = Arrays.stream(intArr1).boxed().map(c -> c+"")
+					.filter(s -> s.startsWith("1")).mapToInt(Integer :: valueOf).toArray();
+			System.out.println(startWithOne);
 			
 			//23. String[] str= {1,2,3,4}; print like 1-2-3-4
 			String results = String.join("-", strArr);
 			System.out.println(results);
- 			
+			
+			//To print number from 1 to 12 using stream 
+			IntStream.rangeClosed(1, 12).forEach(System.out :: print);
+			Stream.iterate(1, n -> n + 1).limit(12).forEach(System.out::print);  // Limit the stream to 10 elements
+			
+			// Input: ABC 		Output:	ABC ACB BAC BCA CAB CBA
+			
+			List<String> stList = Arrays.asList("Hriday","Kumar","Sinha","Shrivastava");
+			System.out.println(String.join(" ", stList));
+			
+			String sub1 = "Hriday";
+			String sub2 = sub1.substring(0, 1);
+			System.out.println(sub1.substring(0, 0));
+			
+			//24 . reverse a String using Stream API
+			String str = "Hriday";
+
+	        String reversed = IntStream.range(0, str.length()) // Generate an IntStream of indices
+	                .mapToObj(i -> str.charAt(str.length() - 1 - i)) // Get characters in reverse order
+	                .map(String::valueOf) // Convert each Character to String
+	                .collect(Collectors.joining()); // Join all Strings to form the reversed string
+
+	        System.out.println("Reversed String: " + reversed);
+	        
+	        //25. Calculate factorial using Stream API
+	        int number = 5;
+	        int factorial = IntStream.rangeClosed(1, number) // Generate a stream from 1 to number
+	                .reduce(1, (a, b) -> a * b); // Multiply each element in the stream
+
+	        System.out.println("Factorial of " + number + " is: " + factorial);
+	        
+	     //26. Generate Fibonacci series using Stream API
+	        int limit = 8; // Number of Fibonacci terms to generate
+
+	        Stream.iterate(new int[]{0, 1}, arr -> new int[]{arr[1], arr[0] + arr[1]}) // Create the stream
+	                .limit(limit) // Limit the stream to the desired number of terms
+	                .map(arr -> arr[0]) // Extract the first number of the pair
+	                .forEach(System.out::println); // Print each Fibonacci number
+			
+			
+
+	        //Sort list in ascending order ignoring the negative sign. input - [1,4,-2,-9,5], output - [1,-2, 4, 5, -9]
+	        List<Integer> numbers = new ArrayList<>();
+	        Collections.addAll(numbers, 1, 4, -2, -9, 5);
+	        // Sort the list ignoring the negative sign
+	        numbers.sort(Comparator.comparingInt(Math::abs));
+	        // Print the sorted list
+	        System.out.println(numbers);
+
 		
 	
 
