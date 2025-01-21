@@ -42,6 +42,7 @@ public class InterviewQuestionsJava8 {
 		 */
 		/*
 		 6. Write the java 8 code for printing the odd and even from a list.
+		 6. Write the java 8 code for printing the odd and even from a list in one java code statement.
 		 7. Write the java 8 code to remove the duplicate number from a array like {20,20,30,30,45,96,2,}
 		 8. Character repeat count.
 		 9. To count the occurrences of words from a given string 
@@ -151,7 +152,13 @@ public class InterviewQuestionsJava8 {
 		forEachOrdered(m -> descendingOrderMap.put(m.getKey(), m.getValue()));
 		System.out.println("A map is in descending order by key :"+descendingOrderMap);
 		
-		
+		//6. Write the java 8 code for printing the odd and even from a list in one java code statement.
+		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0)) // partitioningBy(n -> n % 2 == 0): Groups the numbers into two lists based on whether the condition (n % 2 == 0) is true (even) or false (odd).
+        .forEach((isEven, nums) -> System.out.println((isEven ? "Even: " : "Odd: ") + nums) ); //forEach(): Iterates over the partitioned map and prints the results. The key isEven determines whether it's the "Even" group or the "Odd" group.
+        
+        
+        
 		//7. Write the java 8 code for printing the odd and even from a list.
 		
 		Integer[] intArray2 = new Integer[] {2,3,4,8,15,23,20,89};
@@ -323,7 +330,7 @@ public class InterviewQuestionsJava8 {
 		
 		Map<String, Double> sortMap3 = map2.entrySet().stream().sorted(Map.Entry.<String, Double>comparingByValue().reversed())
 				.collect(Collectors.toMap(Map.Entry :: getKey, Map.Entry :: getValue , (m1, m2) -> m1, LinkedHashMap :: new));
-		
+		//m1 is the value already associated with the key. m2 is the new value trying to be associated with the same key. (m1, m2) -> m1 means "keep the first value (m1) and ignore the second (m2)."
 		Iterator<Map.Entry<String, Double>> itr = sortMap3.entrySet().iterator();
 		
 		Map<Integer, Double> map3 = map1.entrySet().stream()
@@ -364,11 +371,14 @@ public class InterviewQuestionsJava8 {
 			String longestWord = Arrays.stream(strArr).reduce((word1, word2)-> word1.length() > word2.length() ? word1:word2).get();
 			System.out.println(longestWord);
 			
-			//22. Get all the numbers from int Array those has started with 1. int[] intArr1 = {12,23,18,20,15};
+			//22.   those has started with 1. int[] intArr1 = {12,23,18,20,15};
 			int[] intArr1 = {12,23,18,20,15};
 			int[] startWithOne = Arrays.stream(intArr1).boxed().map(c -> c+"")
-					.filter(s -> s.startsWith("1")).mapToInt(Integer :: valueOf).toArray();
+					.filter(s -> s.startsWith("1")).mapToInt(Integer :: parseInt).toArray();
 			System.out.println(startWithOne);
+			//Second Method
+			var va = Arrays.stream(intArr1).mapToObj(i -> ""+i).filter(i -> i.startsWith("1")).mapToInt(Integer :: parseInt).toArray();
+			System.out.println(Arrays.toString(va));
 			
 			//23. String[] str= {1,2,3,4}; print like 1-2-3-4
 			String results = String.join("-", strArr);
@@ -391,7 +401,7 @@ public class InterviewQuestionsJava8 {
 			String str = "Hriday";
 
 	        String reversed = IntStream.range(0, str.length()) // Generate an IntStream of indices
-	                .mapToObj(i -> str.charAt(str.length() - 1 - i)) // Get characters in reverse order
+	                .mapToObj(i -> str.charAt(str.length() - (1+i))) // Get characters in reverse order
 	                .map(String::valueOf) // Convert each Character to String
 	                .collect(Collectors.joining()); // Join all Strings to form the reversed string
 
@@ -400,8 +410,9 @@ public class InterviewQuestionsJava8 {
 	        //25. Calculate factorial using Stream API
 	        int number = 5;
 	        int factorial = IntStream.rangeClosed(1, number) // Generate a stream from 1 to number
-	                .reduce(1, (a, b) -> a * b); // Multiply each element in the stream
-
+	                .reduce(1, (a, b) -> a * b); // (a, b) -> a * b is the accumulator function. It specifies how two elements from the stream should be combined. In this case, the elements are multiplied.
+	        //Second method
+	        factorial = IntStream.rangeClosed(1, 6).reduce((a,b) -> a*b).getAsInt();
 	        System.out.println("Factorial of " + number + " is: " + factorial);
 	        
 	     //26. Generate Fibonacci series using Stream API
@@ -411,18 +422,77 @@ public class InterviewQuestionsJava8 {
 	                .limit(limit) // Limit the stream to the desired number of terms
 	                .map(arr -> arr[0]) // Extract the first number of the pair
 	                .forEach(System.out::println); // Print each Fibonacci number
+	        
+	        //Second Method
+	        Stream.iterate(new int[]{0, 1}, arr -> new int[]{arr[1], arr[0] + arr[1]}) // Create the stream
+            .limit(limit) // Limit the stream to the desired number of terms
+            .forEach(arr -> System.out.print(arr[0]+"\t")); // Print each Fibonacci number
 			
 			
 
-	        //Sort list in ascending order ignoring the negative sign. input - [1,4,-2,-9,5], output - [1,-2, 4, 5, -9]
-	        List<Integer> numbers = new ArrayList<>();
-	        Collections.addAll(numbers, 1, 4, -2, -9, 5);
-	        // Sort the list ignoring the negative sign
-	        numbers.sort(Comparator.comparingInt(Math::abs));
-	        // Print the sorted list
-	        System.out.println(numbers);
-
+	        //Sort list in ascending order ignoring the negative sign. input - [1,4,-2,-9,5], output - [-9, 5, 4, -2, 1]
+	        List<Integer> listInt = Arrays.asList(1,4,-2,-9,5);
+			List<Integer> sortIntL = listInt.stream().sorted(Comparator.comparing(i -> Math.abs((int) i)).reversed()).toList();
+			System.out.println(sortIntL);
+			// Merge arrays into a single array using Stream API
+			//First Method
+			int[] arr1 = {1, 2}; int[] arr2 = {3, 4, 5}; int[] arr3 = {6, 7, 8, 9}; int[] arr4 = {10, 11, 12, 13};
+	        int[] mergedArray = Stream.of(arr1, arr2, arr3, arr4)
+	                                  .flatMapToInt(Arrays::stream)
+	                                  .toArray();
+	        System.out.println(Arrays.toString(mergedArray));
+	        //Second method
+	        mergedArray = IntStream.concat(IntStream.concat(Arrays.stream(arr1), Arrays.stream(arr2)), IntStream.concat(Arrays.stream(arr3), Arrays.stream(arr4))).toArray();
+	        System.out.println(Arrays.toString(mergedArray));
+	        // Merge into single List
+	        List<Integer> l1 = Arrays.asList(1,2);List<Integer> l2 = Arrays.asList(3,4);List<Integer> l3 = Arrays.asList(5,6);
+	        List<Integer> l4 = Stream.of(l1,l2,l3).flatMap(List :: stream).toList();
+	        System.out.println(l4);
+	        
+	        //Find the common elements from 2 arrays.
+	        int[] arr11 = {1,2,3,4,5};
+			int[] arr12 = {4,5,6,7,8};
+			
+			int[] arr13 = Arrays.stream(arr11).filter(i -> Arrays.stream(arr12).anyMatch(elm -> elm == i)).toArray();
+			System.out.println(Arrays.toString(arr13));
+			
+			//Reverse an array using java8 or Stream.
+			int[] actual = {1,2,3,4,5};
+			IntStream.range(0, actual.length/2)
+								.forEach(i -> {
+								int temp = actual[i];
+								actual[i] = actual[actual.length-1 -i ];
+								actual[actual.length-1 -i] = temp;
+								});
+			System.out.println(Arrays.toString(actual));
+			
+			var r = "hriday";
+			System.out.println(r);
 		
+			//String compressor aabbbccaaa = a2b3c2a3
+			String inputt = "aabbbccaaa";
+	        String output = IntStream.range(0, inputt.length())
+	                .filter(i -> i == 0 || inputt.charAt(i) != inputt.charAt(i - 1)) // Start of a new group
+	                .mapToObj(i -> {
+	                    char ch = inputt.charAt(i);
+	                    int count = 1;
+
+	                    // Count consecutive characters
+	                    while (i + count < inputt.length() && inputt.charAt(i + count) == ch) {
+	                        count++;
+	                    }
+
+	                    return ch + String.valueOf(count);
+	                })
+	                .collect(Collectors.joining());
+	        System.out.println(output); // a2b3c2a3
+	        
+	        // Find the first non-repeating character from a given string.
+	        String givenstr = "throot";
+	        var nonRepeating = givenstr.chars().mapToObj(ch -> (char)ch)
+	        		.collect(Collectors.groupingBy(Function.identity(), LinkedHashMap :: new, Collectors.counting()))
+	        		.entrySet().stream().filter(entry -> entry.getValue() == 1).map(Map.Entry :: getKey).findFirst().get();
+	        System.out.println(nonRepeating);
 	
 
 	}
