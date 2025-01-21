@@ -24,7 +24,8 @@ public class RotateArray_N_Times {
 
         // Copy elements to their new positions
         for (int i = 0; i < l; i++) {
-        	rotatedArr[(i + r) % l] = arr[i];
+        	//rotatedArr[(i + r) % l] = arr[i]; // This is clock(right-to-left) wise rotation.
+        	rotatedArr[i] = arr[( i + r ) % l ];// This is anti-clock(left-to-right) wise rotation.
         }
         
         return rotatedArr;
